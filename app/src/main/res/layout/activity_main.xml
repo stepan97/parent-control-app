@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.userasef.parentcontrolapp.homePage.MainActivity"
+    android:orientation="vertical"
+    android:background="@color/grey_888"
+    >
+
+    <TextView
+        android:id="@+id/main_activity_appname"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/action_bar_background"
+        android:text="@string/app_name"
+        android:gravity="center"
+        android:textColor="@color/black"
+        android:textSize="22sp"
+        android:layout_alignParentTop="true"/>
+
+    <FrameLayout
+        android:id="@+id/fragment_container_main"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/main_activity_appname"
+        android:layout_above="@+id/bottom_navigation"
+        >
+
+    </FrameLayout>
+
+    <android.support.design.widget.BottomNavigationView
+        android:id="@+id/bottom_navigation"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:layout_alignParentBottom="true"
+        app:itemIconTint="@drawable/bottom_nav_button_selector"
+        app:itemTextColor="@drawable/bottom_nav_button_selector"
+        app:itemBackground="@color/bottom_nav_item_background"
+        app:menu="@menu/menu_bottom_navigation"
+        >
+
+    </android.support.design.widget.BottomNavigationView>
+
+    <ImageView
+        android:id="@+id/gotoPreviousFragment_btn"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:src="@drawable/back_arrow"
+        android:background="@android:color/transparent"
+        android:layout_marginLeft="7dp"
+        android:layout_marginTop="7dp"
+        android:clickable="true"
+        android:foreground="@drawable/back_arrow_foregroung_selector"
+        />
+
+</RelativeLayout>

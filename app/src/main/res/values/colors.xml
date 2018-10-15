@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#3F51B5</color>
+    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorAccent">#FF4081</color>
+    <color name="action_bar_background">#e29090</color>
+
+    <color name="black">#000</color>
+    <color name="green">#23ca81</color>
+    <color name="green_darker">#11603d</color>
+    <color name="purple">#04264e</color>
+    <color name="bottom_nav_regular">#747474</color>
+    <color name="bottom_nav_selected">#131313</color>
+    <color name="bottom_nav_item_background">#e4e4e4</color>
+    <color name="red_logout">#ea6666</color>
+    <color name="red_dark">#ac0a0f</color>
+    <color name="red_gray">#f4d2d2</color>
+    <color name="red_dark_grey">#694c4c</color>
+    <color name="light_blue">#36ccd4</color>
+
+    <color name="btn_location_normal">#5674b9</color>
+    <color name="btn_location_selected">#182a51</color>
+    <color name="btn_call_log_normal">#00a651</color>
+    <color name="btn_call_log_selected">#033e1f</color>
+    <color name="btn_sms_log_normal">#fff568</color>
+    <color name="btn_sms_log_selected">#89800a</color>
+
+    <color name="btn_green_normal">#39b54a</color>
+    <color name="btn_green_selected">#085112</color>
+    <color name="white">#ffffff</color>
+    <color name="hint_grey">#666666</color>
+    <color name="grey_888">#888888</color>
+    <color name="red_with_opacity">#c453100f</color>
+</resources>
