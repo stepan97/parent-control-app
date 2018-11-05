@@ -11,7 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.userasef.parentcontrolapp.R;
-import com.example.userasef.parentcontrolapp.data.response.CallLog;
+import com.example.userasef.parentcontrolapp.data.response.MyCallLog;
 
 import java.util.ArrayList;
 
@@ -63,7 +63,7 @@ public class CallLogFragment extends Fragment implements ICallLogContract.View{
     }
 
     @Override
-    public void showCallLog(ArrayList<CallLog> list) {
+    public void showCallLog(ArrayList<MyCallLog> list) {
         adapter.setCallLogList(list);
     }
 

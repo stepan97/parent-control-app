@@ -10,6 +10,7 @@ import com.example.userasef.parentcontrolapp.IBaseView;
 public interface ICreateNewUserContract {
     interface View extends IBaseView{
         void newUserCreationSuccess(String name);
+        void newUserCreatingError(String message);
     }
 
     interface Presenter extends IBasePresenter{

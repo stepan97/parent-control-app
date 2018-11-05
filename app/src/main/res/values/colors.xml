@@ -31,4 +31,6 @@
     <color name="hint_grey">#666666</color>
     <color name="grey_888">#888888</color>
     <color name="red_with_opacity">#c453100f</color>
+    <color name="add_forbidden_location_btn_background_start">#ee3233</color>
+    <color name="add_forbidden_location_btn_background_end">#7c0d0e</color>
 </resources>

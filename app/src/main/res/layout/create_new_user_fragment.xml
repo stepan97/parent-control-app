@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@drawable/background_7">
 
     <EditText
-        android:theme="@style/MyEditTextStyle"
         android:id="@+id/new_user_name_et"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -16,7 +16,8 @@
         android:paddingRight="15dp"
         android:textColor="@color/black"
         android:textColorHint="@color/hint_grey"
-        />
+        android:textColorLink="@color/white"
+        android:theme="@style/MyEditTextStyle" />
 
     <Button
         android:id="@+id/create_new_user_btn"

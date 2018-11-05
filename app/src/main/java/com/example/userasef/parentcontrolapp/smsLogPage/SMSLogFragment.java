@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.userasef.parentcontrolapp.R;
+import com.example.userasef.parentcontrolapp.data.response.MySmsLog;
 
 import java.util.ArrayList;
 
@@ -56,7 +57,7 @@ public class SMSLogFragment extends Fragment implements ISMSLogContract.View {
     }
 
     @Override
-    public void showSMSLog(ArrayList<String> list) {
+    public void showSMSLog(ArrayList<MySmsLog> list) {
         adapter.setSMSLogList(list);
     }
 

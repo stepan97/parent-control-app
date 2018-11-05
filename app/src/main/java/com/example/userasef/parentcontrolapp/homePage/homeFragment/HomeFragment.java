@@ -4,15 +4,18 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.Toast;
 
 import com.example.userasef.parentcontrolapp.R;
 import com.example.userasef.parentcontrolapp.selectUserPage.SelectUserFragment;
 import com.example.userasef.parentcontrolapp.selectedUserPage.SelectedUserFragment;
 import com.example.userasef.parentcontrolapp.utils.ActivityUtil;
+import com.google.firebase.iid.FirebaseInstanceId;
 
 /**
  * Created by userAsef on 10/8/2018.

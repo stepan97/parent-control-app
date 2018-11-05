@@ -21,4 +21,15 @@
     <string name="no_user_name">no user name</string>
     <string name="no_time">no date</string>
     <string name="last_known_location">Last Known Location</string>
+    <string name="show_user_locations">Show user\'s locations</string>
+    <string name="no_name">No name</string>
+    <string name="show">Show</string>
+    <string name="default_notification_channel_id">my_default_notification_channel_id</string>
+    <string name="notification_title">My Notification Title</string>
+    <string name="notification_content">My Notification Content</string>
+    <string name="channel_name">My Notification Channel Name</string>
+    <string name="channel_description">My Notification Channel Description</string>
+    <string name="show_forbidden_locations">Show forbidden locations</string>
+    <string name="add_marker_hint">Tap on map to select a location. Long press on added marker to move.</string>
+    <string name="add_new_forbidden_location">Add new forbidden location</string>
 </resources>

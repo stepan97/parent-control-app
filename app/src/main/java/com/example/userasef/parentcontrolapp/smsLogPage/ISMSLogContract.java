@@ -2,6 +2,7 @@ package com.example.userasef.parentcontrolapp.smsLogPage;
 
 import com.example.userasef.parentcontrolapp.IBasePresenter;
 import com.example.userasef.parentcontrolapp.IBaseView;
+import com.example.userasef.parentcontrolapp.data.response.MySmsLog;
 
 import java.util.ArrayList;
 
@@ -11,7 +12,7 @@ import java.util.ArrayList;
 
 public interface ISMSLogContract {
     interface View extends IBaseView{
-        void showSMSLog(ArrayList<String> list);
+        void showSMSLog(ArrayList<MySmsLog> list);
     }
 
     interface Presenter extends IBasePresenter{

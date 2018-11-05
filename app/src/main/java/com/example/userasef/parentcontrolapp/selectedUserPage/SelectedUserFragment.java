@@ -24,6 +24,10 @@ import com.google.gson.Gson;
 
 public class SelectedUserFragment extends Fragment implements View.OnClickListener {
 
+    // todo: Change SelectUser and SELECTEDuser fragment.
+    // selectUser fragment will consist only from Fragment
+    // selectedUser fragment will consist from presenter, and on each button click will get data from server, then goto fragment
+
     private static final String ARG_PARAM_USER_OBJECT = "selected_user";
 
     private ChildUser mChildUser;
@@ -70,13 +74,15 @@ public class SelectedUserFragment extends Fragment implements View.OnClickListen
         initView(view);
         initListeners();
 
+        getActivity().findViewById(R.id.gotoPreviousFragment_btn).setVisibility(View.VISIBLE);
+
         return view;
     }
 
     @Override
-    public void onResume() {
-        super.onResume();
-        getActivity().findViewById(R.id.gotoPreviousFragment_btn).setVisibility(View.VISIBLE);
+    public void onDestroy() {
+        super.onDestroy();
+        getActivity().findViewById(R.id.gotoPreviousFragment_btn).setVisibility(View.GONE);
     }
 
     private void initView(View view){

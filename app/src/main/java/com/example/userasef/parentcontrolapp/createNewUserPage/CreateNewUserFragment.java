@@ -58,6 +58,8 @@ public class CreateNewUserFragment extends Fragment implements ICreateNewUserCon
     }
 
     private void initView(View view){
+        presenter = new CreateNewUserPresenter(this);
+
         name_EditText = view.findViewById(R.id.new_user_name_et);
         submit_btn = view.findViewById(R.id.create_new_user_btn);
 
@@ -100,5 +102,10 @@ public class CreateNewUserFragment extends Fragment implements ICreateNewUserCon
     public void newUserCreationSuccess(String name) {
         // todo: show view that notifies about user creating and shows activation key
         Toast.makeText(getContext(), "New user created: " + name, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void newUserCreatingError(String message) {
+        Toast.makeText(getContext(), "Could not create user: " + message, Toast.LENGTH_SHORT).show();
     }
 }

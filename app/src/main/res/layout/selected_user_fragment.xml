@@ -5,7 +5,7 @@
     android:layout_centerVertical="true"
     android:orientation="vertical"
     android:clickable="true"
-    android:background="@color/white">
+    android:background="@drawable/background_12">
 
     <TextView
         android:id="@+id/selected_name_tv"

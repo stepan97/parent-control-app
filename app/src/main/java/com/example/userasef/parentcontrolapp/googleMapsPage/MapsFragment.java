@@ -1,15 +1,12 @@
 package com.example.userasef.parentcontrolapp.googleMapsPage;
 
-import android.Manifest;
 import android.content.Context;
-import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -19,8 +16,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.PopupMenu;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.userasef.parentcontrolapp.R;
+import com.example.userasef.parentcontrolapp.data.payload.MyForbiddenLocation;
 import com.example.userasef.parentcontrolapp.data.response.MyLatLng;
 import com.example.userasef.parentcontrolapp.data.response.ChildUser;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -34,23 +34,26 @@ import com.google.gson.Gson;
 
 import java.util.ArrayList;
 
-public class MapsFragment extends Fragment implements OnMapReadyCallback, LocationListener, IMapsContract.View {
+public class MapsFragment extends Fragment implements OnMapReadyCallback, LocationListener, IMapsContract.View, GoogleMap.OnMapClickListener {
 
     private static final String TAG = "TAGO";
     private static final String ARG_PARAM_USER_OBJECT = "user_object";
     private static final String ARG_PARAM_TIME = "time";
     private GoogleMap mMap;
     private MapView mapView;
-    public static final int LOCATION_UPDATE_MIN_DISTANCE = 10;
-    public static final int LOCATION_UPDATE_MIN_TIME = 5000;
+    private TextView add_new_forbidden_location;
+    private TextView add_marker_hint_TextView;
+//    public static final int LOCATION_UPDATE_MIN_DISTANCE = 10;
+//    public static final int LOCATION_UPDATE_MIN_TIME = 5000;
     private ChildUser mChildUser;
     private LocationManager mLocationManager;
     private IMapsContract.Presenter presenter;
-    private ImageView popup_ImageView;
+    private TextView popup_menu_TextView;
     private ArrayList<MyLatLng> locations_list = null;
+    private boolean allowMapClicking = false;
+    private MyForbiddenLocation forbidden_location = null;
 
-
-    public static MapsFragment newInstance(ChildUser childUser){
+    public static MapsFragment newInstance(ChildUser childUser) {
         Gson gson = new Gson();
         String tmpUser = gson.toJson(childUser, ChildUser.class);
 
@@ -62,7 +65,7 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback, Locati
         return fragment;
     }
 
-    public MapsFragment(){
+    public MapsFragment() {
         // default constructor
     }
 
@@ -72,7 +75,7 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback, Locati
 
         mLocationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
 
-        if(getArguments() != null){
+        if (getArguments() != null) {
             Gson gson = new Gson();
             mChildUser = gson.fromJson(getArguments().getString(ARG_PARAM_USER_OBJECT), ChildUser.class);
 //            mUser = getArguments().getString(ARG_PARAM_USER_OBJECT);
@@ -90,9 +93,9 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback, Locati
         return view;
     }
 
-    private void initView(View view){
+    private void initView(View view) {
         mapView = view.findViewById(R.id.my_map);
-        if(mapView != null){
+        if (mapView != null) {
             mapView.onCreate(null);
             mapView.onResume();
             mapView.getMapAsync(this);
@@ -100,20 +103,32 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback, Locati
 
         presenter = new MapsPresenter(this);
 
-        popup_ImageView = view.findViewById(R.id.popup_iv);
+        popup_menu_TextView = view.findViewById(R.id.popup_menu_tv);
+        add_new_forbidden_location = view.findViewById(R.id.add_forbidden_location_tv);
+        add_marker_hint_TextView = view.findViewById(R.id.adding_marker_hint_tv);
     }
 
-    private void initListeners(){
-        popup_ImageView.setOnClickListener(new View.OnClickListener() {
+    private void initListeners() {
+        popup_menu_TextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                togglePopupMenu();
+                togglePopupMenuForUserLocations();
+            }
+        });
+
+        add_new_forbidden_location.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (forbidden_location != null)
+                    presenter.addNewForbiddenLocation(forbidden_location);
+                else
+                    showMessage("Please select a location on map.");
             }
         });
     }
 
-    private void togglePopupMenu(){
-        PopupMenu popupMenu = new PopupMenu(getContext(), popup_ImageView);
+    private void togglePopupMenuForUserLocations() {
+        PopupMenu popupMenu = new PopupMenu(getContext(), popup_menu_TextView);
 
         popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
             @Override
@@ -121,26 +136,52 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback, Locati
 
                 int id = item.getItemId();
 
-                if(id >= 0 && id < locations_list.size()){
-                    Location location = new Location("");
-                    location.setLongitude(locations_list.get(id).getLongitude());
-                    location.setLatitude(locations_list.get(id).getLatitude());
+                switch (id){
+                    case 0:
+                        // get and show forbidden locations
+                        presenter.getForbiddenLocationForUser(1);
+                        break;
+                    case 1:
+                        // add new forbidden location popup menu button
+                        if (mMap != null) {
+                            mMap.clear();
 
-                    drawMarker(location, mChildUser.getName(), locations_list.get(id).getDateAndTime(), true, true);
-                    return true;
-                }else
-                    return false;
+                            allowMapClicking = true;
+                            add_marker_hint_TextView.setVisibility(View.VISIBLE);
+                        }
+                        return true;
+                    case 2:
+                        showLocations(locations_list);
+                        break;
+                        default:
+                            if(id > 2 && id < locations_list.size()){
+                                Location location = new Location("");
+                                location.setLongitude(locations_list.get(id).getLongitude());
+                                location.setLatitude(locations_list.get(id).getLatitude());
+
+                                drawMarker(location, mChildUser.getName(), locations_list.get(id).getDateAndTime(), true, true, false);
+                                break;
+                            }
+                            return false;
+
+                }
+
+                return true;
             }
         });
 
         Menu menu = popupMenu.getMenu();
 
-        for (int i = 0; i < locations_list.size(); i++) {
-            menu.add(0, i, i, locations_list.get(i).getDateAndTime());
+        int index = 0, groupId = 0;
+
+        menu.add(groupId, index, index++, R.string.show_forbidden_locations);
+        menu.add(groupId, index, index++, R.string.add_new_forbidden_location);
+        menu.add(groupId, index, index++, R.string.show_user_locations);
+
+        for (int i = index; i < locations_list.size(); i++) {
+            menu.add(groupId, index, index++, locations_list.get(i).getDateAndTime());
         }
 
-//        MenuInflater menuInflater = popupMenu.getMenuInflater();
-//        menuInflater.inflate(R.menu.menu_bottom_navigation, popupMenu.getMenu());
         popupMenu.show();
     }
 
@@ -152,89 +193,41 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback, Locati
 
         presenter.getUserLocationsForToday(mChildUser.getId());
 
-//        Location location = new Location("My Provider");
-//
-//        location.setLatitude(40.689247);
-//        location.setLongitude(-74.044502);
-//
-//        if(location != null)
-//            drawMarker(location);
+        mMap.setOnMapClickListener(this);
     }
 
-    private void getCurrentLocation() {
-        boolean isGPSEnabled = mLocationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
-        boolean isNetworkEnabled = mLocationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
-
-        Location location = null;
-        if (!(isGPSEnabled || isNetworkEnabled)){
-            Log.d(TAG, "GPS or NETWORK is UNAVAILABLE");
-        } else{
-            if (isNetworkEnabled) {
-                if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                    // TODO: Consider calling
-                    //    ActivityCompat#requestPermissions
-                    // here to request the missing permissions, and then overriding
-                    //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-                    //                                          int[] grantResults)
-                    // to handle the case where the user grants the permission. See the documentation
-                    // for ActivityCompat#requestPermissions for more details.
-                    return;
-                }
-                mLocationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER,
-                        LOCATION_UPDATE_MIN_TIME, LOCATION_UPDATE_MIN_DISTANCE, this);
-                location = mLocationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
-//                Log.d(TAG, "Network Provider passive: " + mLocationManager.getProvider("passive"));
-//                Log.d(TAG, "Network Provider gps: " + mLocationManager.getProvider("gps"));
-//                Log.d(TAG, "Network Provider network: " + mLocationManager.getProvider("network"));
-            }
-
-            if (isGPSEnabled) {
-                mLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,
-                        LOCATION_UPDATE_MIN_TIME, LOCATION_UPDATE_MIN_DISTANCE, this);
-                location = mLocationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-//                Log.d(TAG, "GPS Provider passive: " + mLocationManager.getProvider("passive"));
-//                Log.d(TAG, "GPS Provider gps: " + mLocationManager.getProvider("gps"));
-//                Log.d(TAG, "GPS Provider network: " + mLocationManager.getProvider("network"));
-            }
-        }
-
-        // todo: UNDERSTAND.
-        // when i check here location is null, and under it does not call drawMarker.
-        // but somehow drawMarker is called and in it location is NOT NULL
-        if(location == null){
-            Log.d(TAG, "LOCATION IS NULL");
-        }else{
-            Log.d(TAG, "LOCATION IS NOT NULL");
-        }
-
-        if (location != null) {
-            drawMarker(location, "No user name", "No time", true, true);
-        }
-    }
-
-    private void drawMarker(Location location, String username, String time, boolean clearOtherMarkers, boolean animateCamera) {
+    private void drawMarker(Location location, String username, String time, boolean clearOtherMarkers, boolean animateCamera, boolean draggable) {
         if (mMap != null) {
-            if(clearOtherMarkers)
+            if (clearOtherMarkers)
                 mMap.clear();
             LatLng gps = new LatLng(location.getLatitude(), location.getLongitude());
             mMap.addMarker(new MarkerOptions()
                     .position(gps)
                     .title(username)
                     .snippet(time)
-                    .visible(true));
+                    .visible(true))
+                    .setDraggable(draggable);
 
-            if(animateCamera)
+            if (animateCamera)
                 mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(gps, 16.0f));
+
+            if (draggable) {
+                add_new_forbidden_location.setVisibility(View.VISIBLE);
+                add_marker_hint_TextView.setVisibility(View.VISIBLE);
+            } else {
+                add_new_forbidden_location.setVisibility(View.GONE);
+                add_marker_hint_TextView.setVisibility(View.GONE);
+                allowMapClicking = false;
+            }
         }
 
     }
-
 
     /****************  LOCATION LISTENER for CHILD APP  *****************/
     @Override
     public void onLocationChanged(Location location) {
         if (location != null) {
-            drawMarker(location, mChildUser.getName(), "", true, true);
+            drawMarker(location, mChildUser.getName(), "", true, true, false);
             mLocationManager.removeUpdates(this);
         } else {
             Log.d(TAG, "Location is NULL");
@@ -260,7 +253,10 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback, Locati
     /************** MAPS VIEW *******************/
 
     @Override
-    public void showUserLocations(ArrayList<MyLatLng> list) {
+    public void showLocations(ArrayList<MyLatLng> list) {
+
+        if (mMap != null)
+            mMap.clear();
 
         for (int i = 0; i < list.size(); i++) {
             MyLatLng my_location = list.get(i);
@@ -269,15 +265,30 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback, Locati
             location.setLatitude(my_location.getLatitude());
             location.setLongitude(my_location.getLongitude());
 
-            if(i == list.size() - 1){
-                drawMarker(location, getActivity().getString(R.string.last_known_location), my_location.getDateAndTime(), false, true);
-            }else{
-                drawMarker(location, mChildUser.getName(), my_location.getDateAndTime(), false, false);
+            if (i == list.size() - 1) {
+                drawMarker(location, getActivity().getString(R.string.last_known_location), my_location.getDateAndTime(), false, true, false);
+            } else {
+                drawMarker(location, mChildUser.getName(), my_location.getDateAndTime(), false, false, false);
             }
         }
 
         locations_list = list;
-        popup_ImageView.setVisibility(View.VISIBLE);
+        popup_menu_TextView.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void onMapClick(LatLng latLng) {
+        if (!allowMapClicking)
+            return;
+
+        Location location = new Location("");
+        location.setLatitude(latLng.latitude);
+        location.setLongitude(latLng.longitude);
+
+        drawMarker(location, "", "", true, false, true);
+        forbidden_location = new MyForbiddenLocation(location.getLatitude(), location.getLongitude());
+
+        add_marker_hint_TextView.setVisibility(View.GONE);
     }
 
     @Override
@@ -287,7 +298,7 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback, Locati
 
     @Override
     public void showMessage(String msg) {
-
+        Toast.makeText(getContext(), msg, Toast.LENGTH_SHORT).show();
     }
 
     @Override

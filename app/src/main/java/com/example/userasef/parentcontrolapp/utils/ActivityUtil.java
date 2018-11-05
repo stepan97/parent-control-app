@@ -51,23 +51,16 @@ public class ActivityUtil {
         }
     }
 
-    public static boolean setBackButtonVisibility(@NonNull FragmentManager fragmentManager, @NonNull View view, boolean visible){
-        int count = fragmentManager.getBackStackEntryCount();
+    public static void popAllBackStack(@NonNull FragmentManager fragmentManager) {
+        if (fragmentManager != null) {
+            int backStackCount = fragmentManager.getBackStackEntryCount();
 
-        ImageView backBtn = (ImageView) view;
+            for (int i = 0; i < backStackCount; i++) {
+                int backId = fragmentManager.getBackStackEntryAt(i).getId();
 
-        if(backBtn != null){
-
-            if(visible && count > 0){
-                backBtn.setVisibility(View.VISIBLE);
-                return true;
-            }else{
-                backBtn.setVisibility(View.GONE);
+                fragmentManager.popBackStack(backId, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+                fragmentManager.popBackStack();
             }
-        }else{
-            Log.d("TAGO", "Back Button is NULL (Activity Util)");
         }
-
-        return false;
     }
 }

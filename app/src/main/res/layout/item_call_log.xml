@@ -1,26 +1,61 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="horizontal"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:paddingLeft="20dp"
-    android:paddingRight="20dp">
+    android:orientation="horizontal">
+
+    <!--private Date date;-->
+
+    <ImageView
+        android:id="@+id/call_type_item_iv"
+        android:layout_width="64dp"
+        android:layout_height="64dp"
+        android:layout_alignParentLeft="true"
+        android:padding="15dp"
+        android:src="@drawable/icon_question_mark" />
+
+    <TextView
+        android:id="@+id/call_name_item_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_marginLeft="10dp"
+        android:layout_toLeftOf="@+id/call_duration_item_tv"
+        android:layout_toRightOf="@+id/call_type_item_iv"
+        android:gravity="center"
+        android:text="No name"
+        android:textColor="@color/black"
+        android:textSize="22sp" />
 
     <TextView
         android:id="@+id/call_number_item_tv"
-        android:textColor="@color/black"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:textSize="24sp"
-        />
+        android:layout_below="@+id/call_name_item_tv"
+        android:layout_marginLeft="10dp"
+        android:layout_toLeftOf="@+id/call_duration_item_tv"
+        android:layout_toRightOf="@+id/call_type_item_iv"
+        android:gravity="center"
+        android:text="No number"
+        android:textColor="@color/black"
+        android:textSize="22sp" />
 
     <TextView
-        android:id="@+id/call_length_item_tv"
-        android:textColor="@color/black"
+        android:id="@+id/call_duration_item_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
-        android:textSize="24sp"/>
+        android:layout_centerVertical="true"
+        android:layout_marginRight="20dp"
+        android:text="00 : 00"
+        android:textColor="@color/black"
+        android:textSize="22sp" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:layout_below="@+id/call_type_item_iv"
+        android:layout_marginTop="5dp"
+        android:background="@color/grey_888" />
 
 </RelativeLayout>

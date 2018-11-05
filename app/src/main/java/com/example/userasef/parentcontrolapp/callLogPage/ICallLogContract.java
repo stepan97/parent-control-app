@@ -2,7 +2,7 @@ package com.example.userasef.parentcontrolapp.callLogPage;
 
 import com.example.userasef.parentcontrolapp.IBasePresenter;
 import com.example.userasef.parentcontrolapp.IBaseView;
-import com.example.userasef.parentcontrolapp.data.response.CallLog;
+import com.example.userasef.parentcontrolapp.data.response.MyCallLog;
 
 import java.util.ArrayList;
 
@@ -12,7 +12,7 @@ import java.util.ArrayList;
 
 public interface ICallLogContract {
     interface View extends IBaseView {
-        void showCallLog(ArrayList<CallLog> list);
+        void showCallLog(ArrayList<MyCallLog> list);
     }
 
     interface Presenter extends IBasePresenter {

@@ -46,12 +46,15 @@ public class MainActivity extends AppCompatActivity {
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 switch (item.getItemId()){
                     case R.id.action_home:
+                        ActivityUtil.popAllBackStack(getSupportFragmentManager());
                         ActivityUtil.pushFragment(HomeFragment.newInstance(), getSupportFragmentManager(), R.id.fragment_container_main, false);
                         break;
                     case R.id.action_devices:
+                        ActivityUtil.popAllBackStack(getSupportFragmentManager());
                         ActivityUtil.pushFragment(SelectUserFragment.newInstance(), getSupportFragmentManager(), R.id.fragment_container_main, false);
                         break;
                     case R.id.action_create_user:
+                        ActivityUtil.popAllBackStack(getSupportFragmentManager());
                         ActivityUtil.pushFragment(CreateNewUserFragment.newInstance(), getSupportFragmentManager(), R.id.fragment_container_main, false);
                         break;
                     default: return false;
@@ -92,5 +95,11 @@ public class MainActivity extends AppCompatActivity {
             MenuItem item = menu.getItem(i);
             item.setChecked(item.getItemId() == actionId);
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        ActivityUtil.goToPreviousFragment(getSupportFragmentManager());
     }
 }

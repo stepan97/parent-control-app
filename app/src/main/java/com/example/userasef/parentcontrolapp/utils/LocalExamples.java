@@ -2,11 +2,11 @@ package com.example.userasef.parentcontrolapp.utils;
 
 import android.util.Log;
 
-import com.example.userasef.parentcontrolapp.data.response.CallLog;
+import com.example.userasef.parentcontrolapp.data.response.MyCallLog;
 import com.example.userasef.parentcontrolapp.data.response.ChildUser;
 import com.example.userasef.parentcontrolapp.data.response.MyLatLng;
+import com.example.userasef.parentcontrolapp.data.response.MySmsLog;
 
-import java.lang.reflect.Array;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -19,31 +19,19 @@ import java.util.Locale;
 
 public class LocalExamples {
 
-    public static ArrayList<CallLog> getCallLog(){
-        ArrayList<CallLog> callLog = new ArrayList<>();
+    public static ArrayList<MyCallLog> getCallLog(){
+        ArrayList<MyCallLog> myCallLog = new ArrayList<>();
 
-        callLog.add(new CallLog("090 33 33 33", "00 : 05 h"));
-        callLog.add(new CallLog("091 33 33 33", "00 : 05 h"));
-        callLog.add(new CallLog("092 33 33 33", "00 : 05 h"));
-        callLog.add(new CallLog("093 33 33 33", "00 : 05 h"));
-        callLog.add(new CallLog("094 33 33 33", "00 : 05 h"));
-        callLog.add(new CallLog("095 44 33 33", "00 : 05 h"));
-        callLog.add(new CallLog("096 33 33 33", "00 : 05 h"));
-        callLog.add(new CallLog("097 33 33 33", "00 : 05 h"));
-        callLog.add(new CallLog("098 33 33 33", "00 : 05 h"));
-        callLog.add(new CallLog("099 33 33 33", "00 : 05 h"));
-        callLog.add(new CallLog("090 33 33 33", "00 : 05 h"));
-        callLog.add(new CallLog("010 33 33 33", "00 : 05 h"));
-        callLog.add(new CallLog("011 33 33 33", "00 : 05 h"));
-        callLog.add(new CallLog("012 33 33 33", "00 : 05 h"));
-        callLog.add(new CallLog("013 33 33 33", "00 : 05 h"));
-        callLog.add(new CallLog("014 33 33 33", "00 : 05 h"));
-        callLog.add(new CallLog("015 33 33 33", "00 : 05 h"));
-        callLog.add(new CallLog("016 33 33 33", "00 : 05 h"));
-        callLog.add(new CallLog("017 33 33 33", "00 : 05 h"));
-        callLog.add(new CallLog("018 33 33 33", "00 : 05 h"));
+        myCallLog.add(new MyCallLog("Stepan", "098 28 69 77", "20", "INCOMING", new Date()));
+        myCallLog.add(new MyCallLog("Mesrop", "094 13 99 60", "30", "OUTGOING", new Date()));
+        myCallLog.add(new MyCallLog("Vacho", "077 49 70 50", "24", "MISSED", new Date()));
+        myCallLog.add(new MyCallLog("Stepan", "098 28 69 77", "20", "INCOMING", new Date()));
+        myCallLog.add(new MyCallLog("Stepan", "098 28 69 77", "20", "INCOMING", new Date()));
+        myCallLog.add(new MyCallLog("Stepan", "098 28 69 77", "20", "INCOMING", new Date()));
+        myCallLog.add(new MyCallLog("Stepan", "098 28 69 77", "20", "INCOMING", new Date()));
+        myCallLog.add(new MyCallLog("Stepan", "098 28 69 77", "20", "INCOMING", new Date()));
 
-        return callLog;
+        return myCallLog;
     }
 
     public static ArrayList<String> getUserNames(){
@@ -70,29 +58,21 @@ public class LocalExamples {
         return users;
     }
 
-    public static ArrayList<String> getSMSLogs(){
-        ArrayList<String> smsLog = new ArrayList<>();
+    public static ArrayList<MySmsLog> getSMSLogs(){
+        ArrayList<MySmsLog> smsLog = new ArrayList<>();
 
-        smsLog.add("090 33 33 33");
-        smsLog.add("091 33 33 33");
-        smsLog.add("092 33 33 33");
-        smsLog.add("093 33 33 33");
-        smsLog.add("094 33 33 33");
-        smsLog.add("095 44 33 33");
-        smsLog.add("096 33 33 33");
-        smsLog.add("097 33 33 33");
-        smsLog.add("098 33 33 33");
-        smsLog.add("099 33 33 33");
-        smsLog.add("090 33 33 33");
-        smsLog.add("010 33 33 33");
-        smsLog.add("011 33 33 33");
-        smsLog.add("012 33 33 33");
-        smsLog.add("013 33 33 33");
-        smsLog.add("014 33 33 33");
-        smsLog.add("015 33 33 33");
-        smsLog.add("016 33 33 33");
-        smsLog.add("017 33 33 33");
-        smsLog.add("018 33 33 33");
+        smsLog.add(new MySmsLog("Stepan", "098 28 69 77", new Date(), "INCOMING", "Barev"));
+        smsLog.add(new MySmsLog("Sargis", "097 71 45 31", new Date(), "OUTGOING", "Hazar barin"));
+        smsLog.add(new MySmsLog("Stepan", "098 28 69 77", new Date(), "INCOMING", "Inch ka?"));
+        smsLog.add(new MySmsLog("Sargis", "097 71 45 31", new Date(), "OUTGOING", "Ban che du asa..."));
+        smsLog.add(new MySmsLog("Stepan", "098 28 69 77", new Date(), "INCOMING", "Im mot el tenc. inches anum ba ?"));
+        smsLog.add(new MySmsLog("Sargis", "097 71 45 31", new Date(), "OUTGOING", "Voch mi ban tenc."));
+        smsLog.add(new MySmsLog("Stepan", "098 28 69 77", new Date(), "INCOMING", "Parap es ?"));
+        smsLog.add(new MySmsLog("Sargis", "097 71 45 31", new Date(), "OUTGOING", "Ha.. Gorc ka ?"));
+        smsLog.add(new MySmsLog("Stepan", "098 28 69 77", new Date(), "INCOMING", "ha miat tex ka etanq ganq"));
+        smsLog.add(new MySmsLog("Sargis", "097 71 45 31", new Date(), "OUTGOING", "Lav. ba erb enq etum hima ?"));
+        smsLog.add(new MySmsLog("Stepan", "098 28 69 77", new Date(), "INCOMING", "Ha durs ari hima khasnem."));
+        smsLog.add(new MySmsLog("Sargis", "097 71 45 31", new Date(), "OUTGOING", "lav."));
 
         return smsLog;
     }
@@ -105,7 +85,6 @@ public class LocalExamples {
         try {
             list.add(new MyLatLng(40.1786921, 44.5067962, formatter.parse("10-15-2018 10:10")));
             list.add(new MyLatLng(40.1814266, 44.508693, formatter.parse("10-15-2018 10:10")));
-            list.add(new MyLatLng(40.1846791, 44.5118491, formatter.parse("10-15-2018 10:10")));
             list.add(new MyLatLng(40.1846791, 44.5118491, formatter.parse("10-15-2018 10:10")));
             list.add(new MyLatLng(40.1853662, 44.5124266, formatter.parse("10-15-2018 10:10")));
             list.add(new MyLatLng(40.1855759, 44.5144146, formatter.parse("10-15-2018 10:10")));
