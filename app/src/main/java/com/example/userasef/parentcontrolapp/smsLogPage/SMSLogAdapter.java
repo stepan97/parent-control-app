@@ -1,9 +1,8 @@
 package com.example.userasef.parentcontrolapp.smsLogPage;
 
+import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
-import android.text.Layout;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,13 +10,20 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.userasef.parentcontrolapp.R;
-import com.example.userasef.parentcontrolapp.callLogPage.ICallLogContract;
+import com.example.userasef.parentcontrolapp.data.ResponseModel;
 import com.example.userasef.parentcontrolapp.data.response.MySmsLog;
+import com.example.userasef.parentcontrolapp.network.IParentService;
+import com.example.userasef.parentcontrolapp.network.ParentClient;
 import com.example.userasef.parentcontrolapp.utils.LocalExamples;
 
+import java.net.ConnectException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 /**
  * Created by userAsef on 10/10/2018.
@@ -27,9 +33,13 @@ public class SMSLogAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 
     private ArrayList<MySmsLog> logList;
     private ISMSLogContract.View mView;
+    private Context mContext;
+    private static IParentService service;
 
-    public SMSLogAdapter(ISMSLogContract.View view){
+    public SMSLogAdapter(ISMSLogContract.View view, Context context){
         mView = view;
+        mContext = context;
+        service = ParentClient.getClient().create(IParentService.class);
     }
 
     @NonNull
@@ -37,9 +47,7 @@ public class SMSLogAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_sms_log, parent, false);
 
-        SMSViewHolder holder = new SMSViewHolder(view);
-
-        return holder;
+        return new SMSViewHolder(view);
     }
 
     @Override
@@ -98,9 +106,38 @@ public class SMSLogAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     /*********************** PRESENTER *******************/
 
     @Override
-    public void getSMSLogs() {
-        // network logic
-        mView.showSMSLog(LocalExamples.getSMSLogs());
+    public void getSMSLogs(String id) {
+        mView.setLoaderVisibility(View.VISIBLE);
+
+        service.getSmsLogs(id).enqueue(new Callback<ResponseModel<ArrayList<MySmsLog>>>() {
+            @Override
+            public void onResponse(@NonNull Call<ResponseModel<ArrayList<MySmsLog>>> call,@NonNull Response<ResponseModel<ArrayList<MySmsLog>>> response) {
+                if(response.body() == null){
+                    mView.showMessage(mContext.getString(R.string.error_try_again_later));
+                    return;
+                }
+
+                if(response.body().getErrors() != null){
+                    mView.showMessage(response.body().getErrors());
+                    return;
+                }
+
+                mView.showSMSLog(response.body().getData());
+
+                mView.setLoaderVisibility(View.GONE);
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<ResponseModel<ArrayList<MySmsLog>>> call,@NonNull Throwable t) {
+                if(t instanceof ConnectException){
+                    mView.showMessage(mContext.getString(R.string.no_internet));
+                }
+
+                mView.setLoaderVisibility(View.GONE);
+
+                mView.showSMSLog(LocalExamples.getSMSLogs()); //todo: delete this line
+            }
+        });
     }
 
     @Override

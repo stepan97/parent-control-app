@@ -16,6 +16,6 @@ public interface ICallLogContract {
     }
 
     interface Presenter extends IBasePresenter {
-        void getCallLogs(/*id of the user ? name of the user ?*/);
+        void getCallLogs(String id);
     }
 }

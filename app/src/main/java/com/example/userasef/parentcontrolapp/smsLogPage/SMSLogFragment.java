@@ -9,9 +9,13 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.example.userasef.parentcontrolapp.R;
+import com.example.userasef.parentcontrolapp.data.response.ChildUser;
 import com.example.userasef.parentcontrolapp.data.response.MySmsLog;
+import com.example.userasef.parentcontrolapp.view.Loader;
+import com.google.gson.Gson;
 
 import java.util.ArrayList;
 
@@ -21,19 +25,36 @@ import java.util.ArrayList;
 
 public class SMSLogFragment extends Fragment implements ISMSLogContract.View {
 
+    private static final String ARG_PARAM_USER_OBJECT = "user_object";
+    private ChildUser mChildUser;
     private SMSLogAdapter adapter;
     private RecyclerView recycler;
+    private Loader loader;
 
-    public static SMSLogFragment newInstance(){
+    public static SMSLogFragment newInstance(ChildUser childUser){
+        Gson gson = new Gson();
+        String userStr = gson.toJson(childUser, ChildUser.class);
+
         SMSLogFragment fragment = new SMSLogFragment();
 
         Bundle args = new Bundle();
+        args.putString(ARG_PARAM_USER_OBJECT, userStr);
         fragment.setArguments(args);
         return fragment;
     }
 
     public SMSLogFragment(){
         // default constructor
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        if(getArguments() != null){
+            Gson gson = new Gson();
+            mChildUser = gson.fromJson(getArguments().getString(ARG_PARAM_USER_OBJECT), ChildUser.class);
+        }
     }
 
     @Nullable
@@ -43,17 +64,18 @@ public class SMSLogFragment extends Fragment implements ISMSLogContract.View {
 
         initView(view);
 
-        adapter.getSMSLogs();
+        adapter.getSMSLogs(mChildUser.getId());
 
         return view;
     }
 
     private void initView(View view){
         recycler = view.findViewById(R.id.sms_log_recycler);
-        adapter = new SMSLogAdapter(this);
+        adapter = new SMSLogAdapter(this, getContext());
         adapter.setSMSLogList(null);
         recycler.setLayoutManager(new LinearLayoutManager(this.getActivity()));
         recycler.setAdapter(adapter);
+        loader = view.findViewById(R.id.loader);
     }
 
     @Override
@@ -63,7 +85,7 @@ public class SMSLogFragment extends Fragment implements ISMSLogContract.View {
 
     @Override
     public void setLoaderVisibility(int visibility) {
-
+        loader.setVisibility(visibility);
     }
 
     @Override
@@ -73,6 +95,6 @@ public class SMSLogFragment extends Fragment implements ISMSLogContract.View {
 
     @Override
     public void showMessage(String msg) {
-
+        Toast.makeText(getContext(), msg, Toast.LENGTH_SHORT).show();
     }
 }

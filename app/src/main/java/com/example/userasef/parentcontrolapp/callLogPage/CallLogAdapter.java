@@ -1,5 +1,6 @@
 package com.example.userasef.parentcontrolapp.callLogPage;
 
+import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -9,10 +10,18 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.userasef.parentcontrolapp.R;
+import com.example.userasef.parentcontrolapp.data.ResponseModel;
 import com.example.userasef.parentcontrolapp.data.response.MyCallLog;
+import com.example.userasef.parentcontrolapp.network.IParentService;
+import com.example.userasef.parentcontrolapp.network.ParentClient;
 import com.example.userasef.parentcontrolapp.utils.LocalExamples;
 
+import java.net.ConnectException;
 import java.util.ArrayList;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 /**
  * Created by userAsef on 10/9/2018.
@@ -20,11 +29,15 @@ import java.util.ArrayList;
 
 public class CallLogAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements ICallLogContract.Presenter{
 
+    private Context mContext;
     private ArrayList<MyCallLog> logList;
     private ICallLogContract.View mView;
+    private static IParentService service;
 
-    public CallLogAdapter(ICallLogContract.View view){
+    public CallLogAdapter(ICallLogContract.View view, Context context){
         mView = view;
+        mContext = context;
+        service = ParentClient.getClient().create(IParentService.class);
     }
 
     @NonNull
@@ -32,9 +45,7 @@ public class CallLogAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_call_log, parent, false);
 
-        CallViewHolder viewHolder = new CallViewHolder(view);
-
-        return viewHolder;
+        return new CallViewHolder(view);
     }
 
     @Override
@@ -42,7 +53,8 @@ public class CallLogAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         MyCallLog item = logList.get(position);
         CallViewHolder viewHolder = (CallViewHolder) holder;
         viewHolder.number_TextView.setText(item.getNumber());
-        viewHolder.duration_TextView.setText(item.getDuration());
+        String duration = item.getDuration() + " " + mContext.getString(R.string.duration_unit);
+        viewHolder.duration_TextView.setText(duration);
 
         switch (item.getType()){
             case "INCOMING":
@@ -95,10 +107,39 @@ public class CallLogAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     /********************* PRESENTER ****************/
 
     @Override
-    public void getCallLogs() {
-        // network logic
-        ArrayList<MyCallLog> list = LocalExamples.getCallLog();
-        mView.showCallLog(list);
+    public void getCallLogs(String id) {
+        mView.setLoaderVisibility(View.VISIBLE);
+
+        service.getCallLogs(id).enqueue(new Callback<ResponseModel<ArrayList<MyCallLog>>>() {
+            @Override
+            public void onResponse(@NonNull Call<ResponseModel<ArrayList<MyCallLog>>> call,@NonNull Response<ResponseModel<ArrayList<MyCallLog>>> response) {
+
+                if(response.body() == null){
+                    mView.showMessage(mContext.getString(R.string.error_try_again_later));
+                    return;
+                }
+
+                if(response.body().getErrors() != null){
+                    mView.showMessage(response.body().getErrors());
+                    return;
+                }
+
+                mView.showCallLog(response.body().getData());
+
+                mView.setLoaderVisibility(View.GONE);
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<ResponseModel<ArrayList<MyCallLog>>> call,@NonNull Throwable t) {
+                if(t instanceof ConnectException)
+                    mView.showMessage(mContext.getString(R.string.no_internet));
+
+                mView.setLoaderVisibility(View.GONE);
+
+                ArrayList<MyCallLog> list = LocalExamples.getCallLog();
+                mView.showCallLog(list);
+            }
+        });
     }
 
     @Override

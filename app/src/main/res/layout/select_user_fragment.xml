@@ -1,34 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_centerVertical="true"
+    android:background="@color/white"
     android:clickable="true"
-    android:background="@drawable/background_2">
+    android:focusable="true">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:text="@string/select_user_you_want_to_track"
-        android:textSize="20sp"
-        android:textColor="@color/purple"/>
-
-    <View
+    <LinearLayout
+        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@color/black"
-        android:layout_marginTop="5dp"/>
+        android:layout_height="match_parent"
+        android:layout_centerVertical="true"
+        android:clickable="true"
+        android:focusable="true">
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/select_user_recycler"
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="@string/select_user_you_want_to_track"
+            android:textSize="20sp"
+            android:textColor="@color/purple"/>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/black"
+            android:layout_marginTop="5dp"/>
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/select_user_recycler"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            >
+        </android.support.v7.widget.RecyclerView>
+    </LinearLayout>
+
+    <com.example.userasef.parentcontrolapp.view.Loader
+        android:id="@+id/loader"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        >
-
-
-
-    </android.support.v7.widget.RecyclerView>
-
-</LinearLayout>
+        android:layout_height="match_parent"
+        android:visibility="gone"
+        android:clickable="true"
+        android:focusable="true">
+    </com.example.userasef.parentcontrolapp.view.Loader>
+</RelativeLayout>

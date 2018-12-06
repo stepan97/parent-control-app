@@ -1,6 +1,8 @@
 package com.example.userasef.parentcontrolapp.googleMapsPage;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -14,20 +16,21 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.userasef.parentcontrolapp.R;
 import com.example.userasef.parentcontrolapp.data.payload.MyForbiddenLocation;
-import com.example.userasef.parentcontrolapp.data.response.MyLatLng;
 import com.example.userasef.parentcontrolapp.data.response.ChildUser;
+import com.example.userasef.parentcontrolapp.data.response.MyLatLng;
+import com.example.userasef.parentcontrolapp.view.Loader;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.MapsInitializer;
 import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.gson.Gson;
@@ -52,6 +55,7 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback, Locati
     private ArrayList<MyLatLng> locations_list = null;
     private boolean allowMapClicking = false;
     private MyForbiddenLocation forbidden_location = null;
+    private Loader loader;
 
     public static MapsFragment newInstance(ChildUser childUser) {
         Gson gson = new Gson();
@@ -101,11 +105,12 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback, Locati
             mapView.getMapAsync(this);
         }
 
-        presenter = new MapsPresenter(this);
+        presenter = new MapsPresenter(this, getContext());
 
         popup_menu_TextView = view.findViewById(R.id.popup_menu_tv);
         add_new_forbidden_location = view.findViewById(R.id.add_forbidden_location_tv);
         add_marker_hint_TextView = view.findViewById(R.id.adding_marker_hint_tv);
+        loader = view.findViewById(R.id.loader);
     }
 
     private void initListeners() {
@@ -139,7 +144,7 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback, Locati
                 switch (id){
                     case 0:
                         // get and show forbidden locations
-                        presenter.getForbiddenLocationForUser(1);
+                        presenter.getForbiddenLocationForUser(mChildUser.getId());
                         break;
                     case 1:
                         // add new forbidden location popup menu button
@@ -151,7 +156,7 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback, Locati
                         }
                         return true;
                     case 2:
-                        showLocations(locations_list);
+                        showLocations(locations_list, false);
                         break;
                         default:
                             if(id > 2 && id < locations_list.size()){
@@ -159,7 +164,7 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback, Locati
                                 location.setLongitude(locations_list.get(id).getLongitude());
                                 location.setLatitude(locations_list.get(id).getLatitude());
 
-                                drawMarker(location, mChildUser.getName(), locations_list.get(id).getDateAndTime(), true, true, false);
+                                drawMarker(location, mChildUser.getName(), locations_list.get(id).getDateAndTime(), true, true, false, false);
                                 break;
                             }
                             return false;
@@ -196,17 +201,35 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback, Locati
         mMap.setOnMapClickListener(this);
     }
 
-    private void drawMarker(Location location, String username, String time, boolean clearOtherMarkers, boolean animateCamera, boolean draggable) {
+    private void drawMarker(Location location, String username, String time, boolean clearOtherMarkers, boolean animateCamera, boolean draggable, boolean isForbidden) {
         if (mMap != null) {
             if (clearOtherMarkers)
                 mMap.clear();
             LatLng gps = new LatLng(location.getLatitude(), location.getLongitude());
-            mMap.addMarker(new MarkerOptions()
+
+            if(isForbidden){
+                int height = 50;
+                int width = 50;
+                BitmapDrawable bitmapdraw=(BitmapDrawable)getResources().getDrawable(R.drawable.icon_map_forbidden_location);
+                Bitmap b=bitmapdraw.getBitmap();
+                Bitmap smallMarker = Bitmap.createScaledBitmap(b, width, height, false);
+
+                mMap.addMarker(new MarkerOptions()
+                        .position(gps)
+                        .title(username)
+                        .snippet(time)
+                        .visible(true)
+                        .icon(BitmapDescriptorFactory.fromBitmap(smallMarker)))
+                        .setDraggable(draggable);
+            }else{
+                mMap.addMarker(new MarkerOptions()
                     .position(gps)
                     .title(username)
                     .snippet(time)
-                    .visible(true))
+                    .visible(true)
+                    .icon(BitmapDescriptorFactory.defaultMarker(103)))
                     .setDraggable(draggable);
+            }
 
             if (animateCamera)
                 mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(gps, 16.0f));
@@ -227,7 +250,7 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback, Locati
     @Override
     public void onLocationChanged(Location location) {
         if (location != null) {
-            drawMarker(location, mChildUser.getName(), "", true, true, false);
+            drawMarker(location, mChildUser.getName(), "", true, true, false, false);
             mLocationManager.removeUpdates(this);
         } else {
             Log.d(TAG, "Location is NULL");
@@ -253,7 +276,7 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback, Locati
     /************** MAPS VIEW *******************/
 
     @Override
-    public void showLocations(ArrayList<MyLatLng> list) {
+    public void showLocations(ArrayList<MyLatLng> list, boolean isForbidden) {
 
         if (mMap != null)
             mMap.clear();
@@ -266,9 +289,9 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback, Locati
             location.setLongitude(my_location.getLongitude());
 
             if (i == list.size() - 1) {
-                drawMarker(location, getActivity().getString(R.string.last_known_location), my_location.getDateAndTime(), false, true, false);
+                drawMarker(location, getActivity().getString(R.string.last_known_location), my_location.getDateAndTime(), false, true, false, isForbidden);
             } else {
-                drawMarker(location, mChildUser.getName(), my_location.getDateAndTime(), false, false, false);
+                drawMarker(location, mChildUser.getName(), my_location.getDateAndTime(), false, false, false, isForbidden);
             }
         }
 
@@ -285,8 +308,9 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback, Locati
         location.setLatitude(latLng.latitude);
         location.setLongitude(latLng.longitude);
 
-        drawMarker(location, "", "", true, false, true);
-        forbidden_location = new MyForbiddenLocation(location.getLatitude(), location.getLongitude());
+        drawMarker(location, "", "", true, false, true, true);
+        // todo: change childId
+        forbidden_location = new MyForbiddenLocation(mChildUser.getId(), location.getLatitude(), location.getLongitude());
 
         add_marker_hint_TextView.setVisibility(View.GONE);
     }
@@ -303,6 +327,6 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback, Locati
 
     @Override
     public void setLoaderVisibility(int visibility) {
-
+        loader.setVisibility(visibility);
     }
 }

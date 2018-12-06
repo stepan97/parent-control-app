@@ -9,12 +9,12 @@ import java.util.ArrayList;
 
 public interface IMapsContract {
     interface View extends IBaseView{
-        void showLocations(ArrayList<MyLatLng> list);
+        void showLocations(ArrayList<MyLatLng> list, boolean isForbidden);
     }
 
     interface Presenter extends IBasePresenter{
         void getUserLocationsForToday(String id);
-        void getForbiddenLocationForUser(int id);
+        void getForbiddenLocationForUser(String id);
         void addNewForbiddenLocation(MyForbiddenLocation location);
     }
 }

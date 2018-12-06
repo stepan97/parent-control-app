@@ -1,19 +1,22 @@
 package com.example.userasef.parentcontrolapp.data.response;
 
-import java.util.ArrayList;
-import java.util.List;
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
 
 public class ChildUser {
+    @SerializedName("_id")
     private String id;
+    @Expose
     private String name;
-//    private ArrayList<MyLatLng> locations_list;
-//    private List<MyLatLng> forbiddenLocations_List;
+    @Expose
+    private String accessCode;
 
     public ChildUser(){}
 
-    public ChildUser(String id, String name){
+    public ChildUser(String id, String name, String accessCode){
         this.id = id;
         this.name = name;
+        this.accessCode = accessCode;
     }
 
     public String getId(){
@@ -30,5 +33,13 @@ public class ChildUser {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getAccessCode() {
+        return accessCode;
+    }
+
+    public void setAccessCode(String accessCode) {
+        this.accessCode = accessCode;
     }
 }

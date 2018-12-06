@@ -2,8 +2,8 @@ package com.example.userasef.parentcontrolapp.utils;
 
 import android.util.Log;
 
-import com.example.userasef.parentcontrolapp.data.response.MyCallLog;
 import com.example.userasef.parentcontrolapp.data.response.ChildUser;
+import com.example.userasef.parentcontrolapp.data.response.MyCallLog;
 import com.example.userasef.parentcontrolapp.data.response.MyLatLng;
 import com.example.userasef.parentcontrolapp.data.response.MySmsLog;
 
@@ -52,7 +52,7 @@ public class LocalExamples {
             String name = "Name " + i;
             String id = String.valueOf(i);
 
-            users.add(new ChildUser(id, name));
+            users.add(new ChildUser(id, name, "accessCode"));
         }
 
         return users;

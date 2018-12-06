@@ -3,7 +3,7 @@
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
-    <color name="action_bar_background">#e29090</color>
+    <color name="action_bar_background">#77b5fd</color>
 
     <color name="black">#000</color>
     <color name="green">#23ca81</color>
@@ -33,4 +33,22 @@
     <color name="red_with_opacity">#c453100f</color>
     <color name="add_forbidden_location_btn_background_start">#ee3233</color>
     <color name="add_forbidden_location_btn_background_end">#7c0d0e</color>
+    <color name="red_signin">#d51a1a</color>
+    <color name="grey_444">#444444</color>
+
+    <color name="blackWithAlpha">#7d000000</color>
+
+    <color name="red_signup_et_background">#B01010</color>
+    <color name="red_signup_et_icon_background">#870101</color>
+    <color name="grey_bbb">#bbbbbb</color>
+    <color name="grey_ddd">#dddddd</color>
+
+    <color name="green_signup_et_icon_background">#617335</color>
+    <color name="green_signup_et_gradient_start">#768947</color>
+    <color name="green_signup_et_gradient_end">#597334</color>
+    <color name="green_signup_btn_normal">#859e49</color>
+    <color name="green_signup_btn_stroke">#475426</color>
+    <color name="green_signup_btn_pressed">#617335</color>
+
+    <color name="blue_switch_control">#008fd5</color>
 </resources>

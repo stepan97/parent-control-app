@@ -13,4 +13,9 @@
         <item name="colorControlNormal">@color/hint_grey</item>
     </style>
 
+    <style name="appModeSwitchCompatStyle">
+        <item name="thumbTint">@color/white</item>
+        <item name="trackTint">@color/switch_control_track</item>
+    </style>
+
 </resources>

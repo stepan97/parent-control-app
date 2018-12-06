@@ -5,7 +5,8 @@
     android:layout_centerVertical="true"
     android:orientation="vertical"
     android:clickable="true"
-    android:background="@drawable/background_12">
+    android:focusable="true"
+    android:background="@color/white">
 
     <TextView
         android:id="@+id/selected_name_tv"
@@ -13,7 +14,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_marginTop="20dp"
-        android:text="Name"
+        android:text="@string/name"
         android:textColor="@color/black"
         android:textSize="24sp" />
 

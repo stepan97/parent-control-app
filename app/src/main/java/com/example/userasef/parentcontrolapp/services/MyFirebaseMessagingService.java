@@ -1,13 +1,7 @@
 package com.example.userasef.parentcontrolapp.services;
 
-import android.annotation.TargetApi;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
-import android.app.PendingIntent;
-import android.content.Context;
-import android.content.Intent;
-import android.media.RingtoneManager;
-import android.net.Uri;
 import android.os.Build;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.NotificationManagerCompat;
@@ -31,20 +25,16 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
             Log.d(TAG, "DATA: " + remoteMessage.getData());
         }
 
-        String title = "No title";
-        String body = "No body";
-
         // Check if message contains notification
         if(remoteMessage.getNotification() != null){
             Log.d(TAG, "NOTIFICATION: " + remoteMessage.getNotification().getBody());
-            body = remoteMessage.getNotification().getBody();
-            title = remoteMessage.getNotification().getTitle();
+            String body = remoteMessage.getNotification().getBody();
+            String title = remoteMessage.getNotification().getTitle();
 
             showNotification(title, body);
         }
     }
 
-    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     public void showNotification(String title, String content){
         createNotificationChannel();
 
@@ -81,7 +71,9 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
             // Register the channel with the system; you can't change the importance
             // or other notification behaviors after this
             NotificationManager notificationManager = getSystemService(NotificationManager.class);
-            notificationManager.createNotificationChannel(channel);
+            if (notificationManager != null) {
+                notificationManager.createNotificationChannel(channel);
+            }
         }
     }
 }

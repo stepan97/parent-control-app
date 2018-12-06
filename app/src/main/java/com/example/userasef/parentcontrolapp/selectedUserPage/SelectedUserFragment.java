@@ -108,13 +108,11 @@ public class SelectedUserFragment extends Fragment implements View.OnClickListen
                 ActivityUtil.pushFragment(MapsFragment.newInstance(mChildUser), getActivity().getSupportFragmentManager(), R.id.fragment_container_main, true);
                 break;
             case R.id.call_log_btn:
-                ActivityUtil.pushFragment(CallLogFragment.newInstance(), getActivity().getSupportFragmentManager(), R.id.fragment_container_main, true);
+                ActivityUtil.pushFragment(CallLogFragment.newInstance(mChildUser), getActivity().getSupportFragmentManager(), R.id.fragment_container_main, true);
                 break;
             case R.id.sms_log_btn:
-                ActivityUtil.pushFragment(SMSLogFragment.newInstance(), getActivity().getSupportFragmentManager(), R.id.fragment_container_main, true);
+                ActivityUtil.pushFragment(SMSLogFragment.newInstance(mChildUser), getActivity().getSupportFragmentManager(), R.id.fragment_container_main, true);
                 break;
-            default:
-                return;
         }
     }
 }

@@ -16,6 +16,6 @@ public interface ISMSLogContract {
     }
 
     interface Presenter extends IBasePresenter{
-        void getSMSLogs(/*id of the user ? name of the user ?*/);
+        void getSMSLogs(String id);
     }
 }

@@ -8,12 +8,10 @@ import android.text.style.UnderlineSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
 import android.widget.TextView;
 
 import com.example.userasef.parentcontrolapp.R;
 import com.example.userasef.parentcontrolapp.data.response.ChildUser;
-import com.example.userasef.parentcontrolapp.utils.LocalExamples;
 
 import java.util.ArrayList;
 
@@ -21,15 +19,13 @@ import java.util.ArrayList;
  * Created by userAsef on 10/9/2018.
  */
 
-public class SelectUserAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements ISelectUserContract.Presenter {
+public class SelectUserAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private ArrayList<ChildUser> childUserList;
-    private Context context;
     private ISelectUserContract.View mView;
+    private Context context;
 
-    public SelectUserAdapter(ISelectUserContract.View view){
-        mView = view;
-    }
+    public SelectUserAdapter(ISelectUserContract.View view){ this.mView = view; }
 
     @NonNull
     @Override
@@ -37,9 +33,7 @@ public class SelectUserAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         context = parent.getContext();
         View view = LayoutInflater.from(context).inflate(R.layout.item_select_name, parent, false);
 
-        SelectUserViewHolder viewHolder = new SelectUserViewHolder(view);
-
-        return viewHolder;
+        return new SelectUserViewHolder(view);
     }
 
     @Override
@@ -81,26 +75,6 @@ public class SelectUserAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
             ChildUser selectedItem = childUserList.get(getAdapterPosition());
             mView.gotoSelectedUserFragment(selectedItem);
         }
-    }
-
-    /*********** PRESENTER ******************/
-    @Override
-    public void start() {
-
-    }
-
-    @Override
-    public void stop() {
-
-    }
-
-    @Override
-    public void getAllChildUsers() {
-        // network request
-
-        ArrayList<ChildUser> users = LocalExamples.getChildUsers();
-
-        mView.setAdapterChildUserList(users);
     }
 
 

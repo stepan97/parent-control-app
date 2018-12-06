@@ -1,13 +1,11 @@
 package com.example.userasef.parentcontrolapp.selectUserPage;
 
-import android.app.ActionBar;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +15,7 @@ import com.example.userasef.parentcontrolapp.R;
 import com.example.userasef.parentcontrolapp.data.response.ChildUser;
 import com.example.userasef.parentcontrolapp.selectedUserPage.SelectedUserFragment;
 import com.example.userasef.parentcontrolapp.utils.ActivityUtil;
+import com.example.userasef.parentcontrolapp.view.Loader;
 
 import java.util.ArrayList;
 
@@ -28,6 +27,8 @@ public class SelectUserFragment extends Fragment implements ISelectUserContract.
 
     private RecyclerView recycler;
     private SelectUserAdapter adapter;
+    private SelectUserPresenter mPresenter;
+    private Loader loader;
 
     public static SelectUserFragment newInstance(){
         SelectUserFragment fragment = new SelectUserFragment();
@@ -37,7 +38,7 @@ public class SelectUserFragment extends Fragment implements ISelectUserContract.
         return fragment;
     }
 
-    public void SelectUserFragment(){
+    public SelectUserFragment(){
         // default constructor
     }
 
@@ -48,7 +49,8 @@ public class SelectUserFragment extends Fragment implements ISelectUserContract.
 
         initView(view);
 
-        adapter.getAllChildUsers();
+        mPresenter = new SelectUserPresenter(this, getContext());
+        mPresenter.getAllChildUsers();
 
         return view;
     }
@@ -65,11 +67,12 @@ public class SelectUserFragment extends Fragment implements ISelectUserContract.
         adapter.setChildUserList(null);
         recycler.setLayoutManager(new LinearLayoutManager(this.getActivity()));
         recycler.setAdapter(adapter);
+        loader = view.findViewById(R.id.loader);
     }
 
     @Override
     public void setLoaderVisibility(int visibility) {
-
+        loader.setVisibility(visibility);
     }
 
     @Override
@@ -79,7 +82,7 @@ public class SelectUserFragment extends Fragment implements ISelectUserContract.
 
     @Override
     public void showMessage(String msg) {
-
+        Toast.makeText(getContext(), msg, Toast.LENGTH_SHORT).show();
     }
 
     @Override

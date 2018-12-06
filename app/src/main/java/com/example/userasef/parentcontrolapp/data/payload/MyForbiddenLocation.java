@@ -3,19 +3,34 @@ package com.example.userasef.parentcontrolapp.data.payload;
 import android.annotation.TargetApi;
 import android.os.Build;
 
+import com.google.gson.annotations.Expose;
+
 import java.util.Objects;
 
 public class MyForbiddenLocation {
+    @Expose
+    private String childId;
+    @Expose
     private double latitude;
+    @Expose
     private double longitude;
 
     public MyForbiddenLocation() {
 
     }
 
-    public MyForbiddenLocation(double latitude, double longitude){
+    public MyForbiddenLocation(String childId, double latitude, double longitude){
+        this.childId = childId;
         this.latitude = latitude;
         this.longitude = longitude;
+    }
+
+    public String getChildId() {
+        return childId;
+    }
+
+    public void setChildId(String childId) {
+        this.childId = childId;
     }
 
     public double getLatitude() {

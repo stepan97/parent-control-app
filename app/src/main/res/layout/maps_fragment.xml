@@ -22,7 +22,7 @@
         android:clickable="true"
         android:focusable="true"
         android:padding="10dp"
-        android:text="Menu"
+        android:text="@string/menu"
         android:textColor="@color/white"
         android:textSize="18sp"
         android:textStyle="bold"
@@ -60,5 +60,14 @@
         android:textSize="18sp"
         android:textStyle="bold"
         android:visibility="gone" />
+
+    <com.example.userasef.parentcontrolapp.view.Loader
+        android:id="@+id/loader"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:clickable="true"
+        android:focusable="true"
+        android:visibility="gone">
+    </com.example.userasef.parentcontrolapp.view.Loader>
 
 </RelativeLayout>
