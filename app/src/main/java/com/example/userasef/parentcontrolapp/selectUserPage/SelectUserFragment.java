@@ -1,5 +1,7 @@
 package com.example.userasef.parentcontrolapp.selectUserPage;
 
+import android.annotation.TargetApi;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -13,6 +15,7 @@ import android.widget.Toast;
 
 import com.example.userasef.parentcontrolapp.R;
 import com.example.userasef.parentcontrolapp.data.response.ChildUser;
+import com.example.userasef.parentcontrolapp.homePage.MainActivity;
 import com.example.userasef.parentcontrolapp.selectedUserPage.SelectedUserFragment;
 import com.example.userasef.parentcontrolapp.utils.ActivityUtil;
 import com.example.userasef.parentcontrolapp.view.Loader;
@@ -42,6 +45,7 @@ public class SelectUserFragment extends Fragment implements ISelectUserContract.
         // default constructor
     }
 
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -49,17 +53,37 @@ public class SelectUserFragment extends Fragment implements ISelectUserContract.
 
         initView(view);
 
+        // update action bar
+        if(getActivity() != null){
+            ((MainActivity)getActivity()).updateActionBar(
+                    getResources().getString(R.string.app_name),
+                    true,
+                    false
+            );
+
+            if(getContext() != null)
+                ((MainActivity)getActivity()).updateMainBackground(
+                        getContext().getDrawable(R.drawable.select_user_background)
+                );
+        }
+
         mPresenter = new SelectUserPresenter(this, getContext());
         mPresenter.getAllChildUsers();
 
         return view;
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-        getActivity().findViewById(R.id.gotoPreviousFragment_btn).setVisibility(View.GONE);
-    }
+//    @Override
+//    public void onResume() {
+//        super.onResume();
+////        getActivity().findViewById(R.id.gotoPreviousFragment_btn).setVisibility(View.GONE);
+//        if(getActivity() != null)
+//            ((MainActivity)getActivity()).updateActionBar(
+//                    getResources().getString(R.string.app_name),
+//                    true,
+//                    false
+//            );
+//    }
 
     private void initView(View view) {
         recycler = view.findViewById(R.id.select_user_recycler);

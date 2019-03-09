@@ -8,11 +8,13 @@
         android:id="@+id/select_name_item_tv"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textColor="@color/black"
+        android:textColor="@color/white"
         android:text="Test"
-        android:textSize="26sp"
+        android:textSize="24sp"
         android:gravity="center"
         android:layout_marginTop="10dp"
-        android:background="@drawable/name_textview_selector"/>
+        android:layout_marginLeft="70dp"
+        android:layout_marginRight="70dp"
+        android:background="@drawable/round_background"/>
 
 </LinearLayout>

@@ -46,7 +46,7 @@
         android:layout_centerVertical="true"
         android:layout_marginRight="20dp"
         android:text="00 : 00"
-        android:textColor="@color/black"
+        android:textColor="@color/new_green"
         android:textSize="22sp" />
 
     <View
@@ -54,6 +54,6 @@
         android:layout_height="2dp"
         android:layout_below="@+id/call_type_item_iv"
         android:layout_marginTop="5dp"
-        android:background="@color/grey_888" />
+        android:background="@color/new_dark_blue" />
 
 </RelativeLayout>

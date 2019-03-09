@@ -1,22 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:orientation="horizontal">
 
     <ImageView
         android:id="@+id/sms_type_item_iv"
         android:layout_width="64dp"
         android:layout_height="64dp"
-        android:padding="10dp"
-        android:src="@drawable/icon_sent_sms"/>
+        android:layout_alignParentLeft="true"
+        android:padding="15dp"
+        android:src="@drawable/icon_question_mark"/>
 
     <TextView
         android:id="@+id/sms_name_or_number_item_tv"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_marginLeft="10dp"
+        android:layout_toLeftOf="@id/sms_time_item_tv"
         android:layout_toRightOf="@+id/sms_type_item_iv"
         android:gravity="center"
-        android:text="Stepan"
+        android:text="@string/no_name"
         android:textColor="@color/black"
         android:textSize="22sp" />
 
@@ -25,27 +30,29 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/sms_name_or_number_item_tv"
+        android:layout_marginLeft="10dp"
+        android:layout_toLeftOf="@+id/sms_time_item_tv"
         android:layout_toRightOf="@+id/sms_type_item_iv"
         android:gravity="center"
-        android:text="19-05-2018"
+        android:text="@string/no_date"
         android:textColor="@color/black"
         android:textSize="22sp" />
 
     <TextView
         android:id="@+id/sms_time_item_tv"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/sms_date_item_tv"
-        android:layout_toRightOf="@+id/sms_type_item_iv"
-        android:gravity="center"
-        android:text="22:30"
-        android:textColor="@color/black"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="20dp"
+        android:text="00:00"
+        android:textColor="@color/new_lighter_blue"
         android:textSize="22sp" />
 
     <View
         android:layout_width="match_parent"
         android:layout_height="2dp"
-        android:layout_below="@+id/sms_time_item_tv"
+        android:layout_below="@+id/sms_type_item_iv"
         android:layout_marginTop="5dp"
-        android:background="@color/grey_888" />
+        android:background="@color/new_dark_blue" />
 </RelativeLayout>

@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.userasef.parentcontrolapp.R;
+import com.example.userasef.parentcontrolapp.homePage.MainActivity;
 import com.example.userasef.parentcontrolapp.utils.Constants;
 import com.example.userasef.parentcontrolapp.utils.PreferencesUtils;
 
@@ -40,7 +41,16 @@ public class HomeFragment extends Fragment implements IHomeContract.View{
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.home_fragment, container, false);
 
+        initView(view);
         presenter = new HomePresenter();
+
+        if(getActivity() != null){
+            ((MainActivity)getActivity()).updateActionBar(
+                    getResources().getString(R.string.app_name),
+                    true,
+                    false
+            );
+        }
 
         return view;
     }
@@ -56,11 +66,11 @@ public class HomeFragment extends Fragment implements IHomeContract.View{
         }
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-        getActivity().findViewById(R.id.gotoPreviousFragment_btn).setVisibility(View.GONE);
-    }
+//    @Override
+//    public void onResume() {
+//        super.onResume();
+////        getActivity().findViewById(R.id.gotoPreviousFragment_btn).setVisibility(View.GONE);
+//    }
 
     @Override
     public void setLoaderVisibility(int visibility) {

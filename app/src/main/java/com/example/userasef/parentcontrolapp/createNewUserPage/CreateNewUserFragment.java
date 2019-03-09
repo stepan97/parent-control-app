@@ -18,6 +18,7 @@ import android.widget.Toast;
 
 import com.example.userasef.parentcontrolapp.R;
 import com.example.userasef.parentcontrolapp.data.response.ChildUser;
+import com.example.userasef.parentcontrolapp.homePage.MainActivity;
 import com.example.userasef.parentcontrolapp.view.Loader;
 
 /**
@@ -53,14 +54,22 @@ public class CreateNewUserFragment extends Fragment implements ICreateNewUserCon
         initView(view);
         initListeners();
 
+        // update action bar title
+        if(getActivity() != null)
+            ((MainActivity)getActivity()).updateActionBar(
+                    getResources().getString(R.string.app_name),
+                    false,
+                    false
+            );
+
         return view;
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-        getActivity().findViewById(R.id.gotoPreviousFragment_btn).setVisibility(View.GONE);
-    }
+//    @Override
+//    public void onResume() {
+//        super.onResume();
+//        getActivity().findViewById(R.id.gotoPreviousFragment_btn).setVisibility(View.GONE);
+//    }
 
     private void initView(View view){
         presenter = new CreateNewUserPresenter(this, getContext());

@@ -14,6 +14,7 @@ import android.widget.Toast;
 import com.example.userasef.parentcontrolapp.R;
 import com.example.userasef.parentcontrolapp.data.response.ChildUser;
 import com.example.userasef.parentcontrolapp.data.response.MySmsLog;
+import com.example.userasef.parentcontrolapp.homePage.MainActivity;
 import com.example.userasef.parentcontrolapp.view.Loader;
 import com.google.gson.Gson;
 
@@ -65,6 +66,15 @@ public class SMSLogFragment extends Fragment implements ISMSLogContract.View {
         initView(view);
 
         adapter.getSMSLogs(mChildUser.getId());
+
+        // update action bar
+        if(getActivity() != null){
+            ((MainActivity)getActivity()).updateActionBar(
+                    getResources().getString(R.string.sms_log),
+                    false,
+                    true
+            );
+        }
 
         return view;
     }

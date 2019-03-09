@@ -9,14 +9,14 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="50dp"
         android:hint="@string/name"
         android:inputType="textPersonName"
         android:paddingLeft="15dp"
         android:paddingRight="15dp"
         android:textColor="@color/black"
-        android:textColorHint="@color/hint_grey"
-        android:textColorLink="@color/white"
+        android:textColorHint="@color/new_dark_blue"
+        android:textColorLink="@color/new_dark_blue"
         android:theme="@style/MyEditTextStyle" />
 
     <Button
@@ -26,10 +26,11 @@
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="50dp"
-        android:background="@drawable/submit_button_selector"
-        android:paddingLeft="30dp"
-        android:paddingRight="30dp"
+        android:background="@drawable/round_background"
+        android:paddingLeft="50dp"
+        android:paddingRight="50dp"
         android:text="@string/submit"
+        android:textSize="20sp"
         android:textAllCaps="false" />
 
     <com.example.userasef.parentcontrolapp.view.Loader

@@ -6,17 +6,9 @@
     android:orientation="vertical"
     android:clickable="true"
     android:focusable="true"
-    android:background="@color/white">
-
-    <TextView
-        android:id="@+id/selected_name_tv"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginTop="20dp"
-        android:text="@string/name"
-        android:textColor="@color/black"
-        android:textSize="24sp" />
+    android:background="@color/white"
+    android:gravity="center"
+    >
 
     <Button
         android:id="@+id/location_btn"
@@ -24,11 +16,12 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_marginTop="40dp"
-        android:background="@drawable/btn_location_background_selector"
-        android:paddingLeft="40dp"
-        android:paddingRight="40dp"
+        android:background="@drawable/round_background"
+        android:paddingLeft="50dp"
+        android:paddingRight="50dp"
         android:text="@string/location"
-        android:textColor="@color/black" />
+        android:textColor="@color/white"
+        android:textSize="20sp"/>
 
     <Button
         android:id="@+id/call_log_btn"
@@ -36,11 +29,12 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_marginTop="20dp"
-        android:background="@drawable/btn_call_log_background_selector"
-        android:paddingLeft="40dp"
-        android:paddingRight="40dp"
+        android:background="@drawable/round_background"
+        android:paddingLeft="50dp"
+        android:paddingRight="50dp"
         android:text="@string/call_log"
-        android:textColor="@color/black" />
+        android:textColor="@color/white"
+        android:textSize="20sp"/>
 
     <Button
         android:id="@+id/sms_log_btn"
@@ -48,10 +42,11 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_marginTop="20dp"
-        android:background="@drawable/btn_sms_log_background_selector"
-        android:paddingLeft="40dp"
-        android:paddingRight="40dp"
+        android:background="@drawable/round_background"
+        android:paddingLeft="50dp"
+        android:paddingRight="50dp"
         android:text="@string/sms_log"
-        android:textColor="@color/black" />
+        android:textColor="@color/white"
+        android:textSize="20sp"/>
 
 </LinearLayout>

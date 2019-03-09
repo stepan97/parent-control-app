@@ -20,7 +20,7 @@
     <string name="select_user_you_want_to_track">Ընտրեք երեխային</string>
     <string name="title_activity_maps">Քարտեզ</string>
     <string name="no_user_name">անուն չկա</string>
-    <string name="no_time">ժամ չկա</string>
+    <string name="no_date">Օրը չկա</string>
     <string name="last_known_location">Վերջին հայտնի վայրը</string>
     <string name="show_user_locations">Տեսնել բոլոր վայրերը</string>
     <string name="no_name">անուն չկա</string>

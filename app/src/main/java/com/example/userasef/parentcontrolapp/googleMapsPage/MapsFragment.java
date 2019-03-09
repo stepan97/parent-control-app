@@ -24,6 +24,7 @@ import com.example.userasef.parentcontrolapp.R;
 import com.example.userasef.parentcontrolapp.data.payload.MyForbiddenLocation;
 import com.example.userasef.parentcontrolapp.data.response.ChildUser;
 import com.example.userasef.parentcontrolapp.data.response.MyLatLng;
+import com.example.userasef.parentcontrolapp.homePage.MainActivity;
 import com.example.userasef.parentcontrolapp.view.Loader;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -93,6 +94,15 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback, Locati
 
         initView(view);
         initListeners();
+
+        // update action bar
+        if(getActivity() != null){
+            ((MainActivity)getActivity()).updateActionBar(
+                    getResources().getString(R.string.location),
+                    false,
+                    true
+            );
+        }
 
         return view;
     }
@@ -210,7 +220,7 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback, Locati
             if(isForbidden){
                 int height = 50;
                 int width = 50;
-                BitmapDrawable bitmapdraw=(BitmapDrawable)getResources().getDrawable(R.drawable.icon_map_forbidden_location);
+                BitmapDrawable bitmapdraw=(BitmapDrawable)getResources().getDrawable(R.drawable.icon_forbidden_location);
                 Bitmap b=bitmapdraw.getBitmap();
                 Bitmap smallMarker = Bitmap.createScaledBitmap(b, width, height, false);
 

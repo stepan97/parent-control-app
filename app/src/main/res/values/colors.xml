@@ -3,7 +3,7 @@
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
-    <color name="action_bar_background">#77b5fd</color>
+    <color name="action_bar_background">#4A38B3</color>
 
     <color name="black">#000</color>
     <color name="green">#23ca81</color>
@@ -51,4 +51,12 @@
     <color name="green_signup_btn_pressed">#617335</color>
 
     <color name="blue_switch_control">#008fd5</color>
+
+    <color name="new_darker_blue">#2D297F</color>
+    <color name="new_dark_blue">#332A93</color>
+    <color name="new_lighter_blue">#4A38B3</color>
+    <color name="new_light_blue">#725DD4</color>
+    <color name="new_red">#DD0000</color>
+    <color name="new_green">#52C306</color>
+    <color name="new_transparent">#00ffffff</color>
 </resources>

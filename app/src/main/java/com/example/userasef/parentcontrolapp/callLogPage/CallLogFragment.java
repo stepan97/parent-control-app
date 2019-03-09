@@ -14,6 +14,7 @@ import android.widget.Toast;
 import com.example.userasef.parentcontrolapp.R;
 import com.example.userasef.parentcontrolapp.data.response.ChildUser;
 import com.example.userasef.parentcontrolapp.data.response.MyCallLog;
+import com.example.userasef.parentcontrolapp.homePage.MainActivity;
 import com.example.userasef.parentcontrolapp.view.Loader;
 import com.google.gson.Gson;
 
@@ -55,6 +56,14 @@ public class CallLogFragment extends Fragment implements ICallLogContract.View{
             Gson gson = new Gson();
             mChildUser = gson.fromJson(getArguments().getString(ARG_PARAM_USER_OBJECT), ChildUser.class);
         }
+
+        // update action bar title
+        if(getActivity() != null)
+            ((MainActivity)getActivity()).updateActionBar(
+                    getResources().getString(R.string.call_log),
+                    false,
+                    true
+            );
     }
 
     @Nullable

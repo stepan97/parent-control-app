@@ -8,12 +8,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.TextView;
 
 import com.example.userasef.parentcontrolapp.R;
 import com.example.userasef.parentcontrolapp.callLogPage.CallLogFragment;
 import com.example.userasef.parentcontrolapp.data.response.ChildUser;
 import com.example.userasef.parentcontrolapp.googleMapsPage.MapsFragment;
+import com.example.userasef.parentcontrolapp.homePage.MainActivity;
 import com.example.userasef.parentcontrolapp.smsLogPage.SMSLogFragment;
 import com.example.userasef.parentcontrolapp.utils.ActivityUtil;
 import com.google.gson.Gson;
@@ -31,10 +31,14 @@ public class SelectedUserFragment extends Fragment implements View.OnClickListen
     private static final String ARG_PARAM_USER_OBJECT = "selected_user";
 
     private ChildUser mChildUser;
-    private TextView name_TextView;
+//    private TextView name_TextView;
     private Button location_btn;
     private Button call_log_btn;
     private Button sms_log_btn;
+
+    public ChildUser getmChildUser() {
+        return mChildUser;
+    }
 
     public static SelectedUserFragment newInstance(ChildUser childUser){
         Bundle args = new Bundle();
@@ -74,25 +78,39 @@ public class SelectedUserFragment extends Fragment implements View.OnClickListen
         initView(view);
         initListeners();
 
-        getActivity().findViewById(R.id.gotoPreviousFragment_btn).setVisibility(View.VISIBLE);
+        String title = "";
+        if(mChildUser != null){
+            title = mChildUser.getName();
+        }else {
+            title = getResources().getString(R.string.app_name);
+        }
+
+        if(getActivity() != null)
+            ((MainActivity)getActivity()).updateActionBar(
+                    title,
+                    true,
+                    true
+            );
+
+//        getActivity().findViewById(R.id.gotoPreviousFragment_btn).setVisibility(View.VISIBLE);
 
         return view;
     }
 
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        getActivity().findViewById(R.id.gotoPreviousFragment_btn).setVisibility(View.GONE);
-    }
+//    @Override
+//    public void onDestroy() {
+//        super.onDestroy();
+//        getActivity().findViewById(R.id.gotoPreviousFragment_btn).setVisibility(View.GONE);
+//    }
 
     private void initView(View view){
         location_btn = view.findViewById(R.id.location_btn);
         call_log_btn = view.findViewById(R.id.call_log_btn);
         sms_log_btn = view.findViewById(R.id.sms_log_btn);
 
-        name_TextView = view.findViewById(R.id.selected_name_tv);
-        if(name_TextView != null)
-            name_TextView.setText(mChildUser.getName());
+//        name_TextView = view.findViewById(R.id.selected_name_tv);
+//        if(name_TextView != null)
+//            name_TextView.setText(mChildUser.getName());
     }
 
     private void initListeners(){

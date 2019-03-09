@@ -3,10 +3,10 @@
     <string name="select_user">Select User</string>
     <string name="or">or</string>
     <string name="add_new_user">Add new User</string>
-    <string name="location">Location</string>
-    <string name="call_log">Call log</string>
+    <string name="location">LOCATION</string>
+    <string name="call_log">CALL LOG</string>
     <string name="call_log_bold"><b>Call log</b></string>
-    <string name="sms_log">SMS log</string>
+    <string name="sms_log">SMS LOG</string>
     <string name="sms_log_bold"><b>SMS log</b></string>
     <string name="home">Home</string>
     <string name="devices">Devices</string>
@@ -19,7 +19,7 @@
     <string name="select_user_you_want_to_track">Select User you want to track</string>
     <string name="title_activity_maps">Map</string>
     <string name="no_user_name">no user name</string>
-    <string name="no_time">no date</string>
+    <string name="no_date">No date</string>
     <string name="last_known_location">Last Known Location</string>
     <string name="show_user_locations">Show user\'s locations</string>
     <string name="no_name">No name</string>

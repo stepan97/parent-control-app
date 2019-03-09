@@ -1,33 +1,41 @@
 package com.example.userasef.parentcontrolapp.homePage;
 
+import android.annotation.TargetApi;
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.graphics.Color;
+import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.example.userasef.parentcontrolapp.R;
+import com.example.userasef.parentcontrolapp.callLogPage.CallLogFragment;
 import com.example.userasef.parentcontrolapp.createNewUserPage.CreateNewUserFragment;
 import com.example.userasef.parentcontrolapp.homePage.homeFragment.HomeFragment;
 import com.example.userasef.parentcontrolapp.selectUserPage.SelectUserFragment;
+import com.example.userasef.parentcontrolapp.selectedUserPage.SelectedUserFragment;
 import com.example.userasef.parentcontrolapp.settingsPage.SettingsActivity;
+import com.example.userasef.parentcontrolapp.smsLogPage.SMSLogFragment;
 import com.example.userasef.parentcontrolapp.utils.ActivityUtil;
-import com.example.userasef.parentcontrolapp.utils.PreferencesUtils;
-
-import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity {
 
-    private static String LANGUANGE_PREFS_KEY = "app_language";
+//    private static String LANGUANGE_PREFS_KEY = "app_language";
     private BottomNavigationView bottomNavigationView;
     private ImageView backButton_ImageView;
-    private ImageView language_ImageView;
+//    private ImageView language_ImageView;
+    private TextView appname_TextView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,13 +44,49 @@ public class MainActivity extends AppCompatActivity {
 
         initView();
         initListeners();
-
-        setAppLanguage("hy");
-        PreferencesUtils.putString(MainActivity.this, LANGUANGE_PREFS_KEY, "hy");
-        language_ImageView.setImageResource(R.drawable.icon_arm_flag);
+        initNavigation();
 
         ActivityUtil.pushFragment(HomeFragment.newInstance(), getSupportFragmentManager(), R.id.fragment_container_main, false);
         initBottomNavigationView();
+    }
+
+    private void initNavigation(){
+        this.getSupportFragmentManager().addOnBackStackChangedListener(new FragmentManager.OnBackStackChangedListener() {
+            @Override
+            public void onBackStackChanged() {
+                Fragment current = getSupportFragmentManager().findFragmentById(R.id.fragment_container_main);
+
+                if(current instanceof HomeFragment || current instanceof SelectUserFragment || current instanceof CreateNewUserFragment) {
+                    updateActionBar(
+                            getResources().getString(R.string.app_name),
+                            true,
+                            false
+                    );
+
+                    View v = findViewById(R.id.main_layout);
+
+                    // todo: add check for api version. if(api >= 21) getDrawable(id); else getDrawable(id, getTheme());
+                    if(current instanceof HomeFragment)
+                        v.setBackground(getResources().getDrawable(R.drawable.home_background));
+                    else if(current instanceof SelectUserFragment)
+                        v.setBackground(getResources().getDrawable(R.drawable.select_user_background));
+                }else {
+                    String title = getResources().getString(R.string.app_name);
+
+                    if(current instanceof CallLogFragment) title = getResources().getString(R.string.call_log);
+
+                    if(current instanceof SMSLogFragment) title = getResources().getString(R.string.sms_log);
+
+                    if(current instanceof SelectedUserFragment) title = ((SelectedUserFragment) current).getmChildUser().getName();
+
+                    updateActionBar(
+                            title,
+                            false,
+                            true
+                    );
+                }
+            }
+        });
     }
 
     private void initBottomNavigationView(){
@@ -83,16 +127,8 @@ public class MainActivity extends AppCompatActivity {
 
     private void initView(){
         backButton_ImageView = findViewById(R.id.gotoPreviousFragment_btn);
-        language_ImageView = findViewById(R.id.change_language_btn);
-
-        language_ImageView.setImageResource(R.drawable.icon_us_flag);
-
-        String language = PreferencesUtils.getString(this, LANGUANGE_PREFS_KEY, null);
-        if(language == null){
-            return;
-        }
-
-        setAppLanguage(language);
+//        language_ImageView = findViewById(R.id.change_language_btn);
+        appname_TextView = findViewById(R.id.main_activity_appname);
     }
 
     private void initListeners() {
@@ -104,31 +140,6 @@ public class MainActivity extends AppCompatActivity {
 
                 if (manager.getBackStackEntryCount() == 0) {
                     backButton_ImageView.setVisibility(View.GONE);
-                }
-            }
-        });
-
-        language_ImageView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String lang = PreferencesUtils.getString(MainActivity.this, LANGUANGE_PREFS_KEY, null);
-                if(lang == null){
-                    setAppLanguage("hy");
-                    PreferencesUtils.putString(MainActivity.this, LANGUANGE_PREFS_KEY, "hy");
-                    language_ImageView.setImageResource(R.drawable.icon_arm_flag);
-                    return;
-                }
-                switch (lang) {
-                    case "en":
-                        setAppLanguage("hy");
-                        PreferencesUtils.putString(MainActivity.this, LANGUANGE_PREFS_KEY, "hy");
-                        language_ImageView.setImageResource(R.drawable.icon_arm_flag);
-                        break;
-                    case "hy":
-                        setAppLanguage("en");
-                        PreferencesUtils.putString(MainActivity.this, LANGUANGE_PREFS_KEY, "en");
-                        language_ImageView.setImageResource(R.drawable.icon_us_flag);
-                        break;
                 }
             }
         });
@@ -172,12 +183,38 @@ public class MainActivity extends AppCompatActivity {
         super.onConfigurationChanged(newConfig);
     }
 
-    private void setAppLanguage(String languageToLoad){
-        Locale locale = new Locale(languageToLoad);
-        Locale.setDefault(locale);
-        Configuration config = new Configuration();
-        config.locale = locale;
-        getBaseContext().getResources().updateConfiguration(config,
-                getBaseContext().getResources().getDisplayMetrics());
+    public void updateActionBar(@NonNull String title, boolean transparent, boolean showBackButton){
+
+        if(appname_TextView == null)
+            return;
+
+        appname_TextView.setText(title);
+
+
+        if(transparent){
+            appname_TextView.setBackgroundColor(Color.TRANSPARENT);
+            appname_TextView.setTextColor(getResources().getColor(R.color.new_lighter_blue));
+        }else{
+            appname_TextView.setBackgroundColor(getResources().getColor(R.color.new_darker_blue));
+            appname_TextView.setTextColor(getResources().getColor(R.color.white));
+        }
+        if(showBackButton){
+            backButton_ImageView.setVisibility(View.VISIBLE);
+        }else{
+            backButton_ImageView.setVisibility(View.GONE);
+        }
+    }
+
+    @TargetApi(Build.VERSION_CODES.M)
+    public void updateMainBackground(Drawable drawable){
+        RelativeLayout layout = findViewById(R.id.main_layout);
+        if(layout != null){
+            layout.setBackground(drawable);
+            if(drawable == null){
+                layout.setBackgroundColor(getApplicationContext().getColor(R.color.new_darker_blue));
+            }else {
+                layout.setBackgroundColor(getApplicationContext().getColor(R.color.new_transparent));
+            }
+        }
     }
 }

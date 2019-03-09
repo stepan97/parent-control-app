@@ -2,15 +2,16 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
     android:clickable="true"
-    android:focusable="true">
+    android:focusable="true"
+    android:layout_centerVertical="true">
 
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_centerVertical="true"
+        android:paddingTop="50dp"
         android:clickable="true"
         android:focusable="true">
 
@@ -20,18 +21,24 @@
             android:layout_gravity="center"
             android:text="@string/select_user_you_want_to_track"
             android:textSize="20sp"
-            android:textColor="@color/purple"/>
+            android:textColor="@color/white"
+            android:background="@drawable/round_background"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:clickable="false"
+            android:focusable="false"/>
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@color/black"
-            android:layout_marginTop="5dp"/>
+        <!--<View-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="1dp"-->
+            <!--android:background="@color/black"-->
+            <!--android:layout_marginTop="5dp"/>-->
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/select_user_recycler"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginTop="30dp"
             >
         </android.support.v7.widget.RecyclerView>
     </LinearLayout>

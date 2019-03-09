@@ -4,18 +4,20 @@
     android:layout_height="match_parent"
     android:clickable="true"
     android:focusable="true"
-    android:background="@drawable/background_13">
+    android:background="@color/new_transparent">
 
     <TextView
         android:id="@+id/homepage_text_tv"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_marginLeft="25dp"
-        android:layout_marginRight="25dp"
+        android:paddingBottom="100dp"
+        android:layout_marginLeft="30dp"
+        android:layout_marginRight="50dp"
         android:text="@string/welcome_text_home_fragment"
-        android:textColor="@color/black"
+        android:textColor="@color/new_darker_blue"
         android:textSize="20sp" />
+
 
     <!--<Button-->
     <!--android:id="@+id/select_user_btn"-->

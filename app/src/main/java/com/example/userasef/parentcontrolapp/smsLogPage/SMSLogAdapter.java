@@ -60,10 +60,10 @@ public class SMSLogAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 
         switch (item.getType()){
             case "INCOMING":
-                viewHolder.type_ImageView.setImageResource(R.drawable.icon_recieved_sms);
+                viewHolder.type_ImageView.setImageResource(R.drawable.icon_recieved_message);
                 break;
             case "OUTGOING":
-                viewHolder.type_ImageView.setImageResource(R.drawable.icon_sent_sms);
+                viewHolder.type_ImageView.setImageResource(R.drawable.icon_sent_message);
                 break;
             default:
                 viewHolder.type_ImageView.setImageResource(R.drawable.icon_question_mark);
