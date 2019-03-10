@@ -193,9 +193,10 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback, Locati
         menu.add(groupId, index, index++, R.string.add_new_forbidden_location);
         menu.add(groupId, index, index++, R.string.show_user_locations);
 
-        for (int i = index; i < locations_list.size(); i++) {
-            menu.add(groupId, index, index++, locations_list.get(i).getDateAndTime());
-        }
+        if(locations_list != null)
+            for (int i = index; i < locations_list.size(); i++) {
+                menu.add(groupId, index, index++, locations_list.get(i).getDateAndTime());
+            }
 
         popupMenu.show();
     }

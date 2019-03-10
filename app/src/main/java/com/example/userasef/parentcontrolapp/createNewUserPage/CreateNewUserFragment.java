@@ -9,6 +9,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -65,11 +66,12 @@ public class CreateNewUserFragment extends Fragment implements ICreateNewUserCon
         return view;
     }
 
-//    @Override
-//    public void onResume() {
-//        super.onResume();
+    @Override
+    public void onResume() {
+        super.onResume();
 //        getActivity().findViewById(R.id.gotoPreviousFragment_btn).setVisibility(View.GONE);
-//    }
+        Log.d("TAGO", "onResume AddNewUser Fragment");
+    }
 
     private void initView(View view){
         presenter = new CreateNewUserPresenter(this, getContext());

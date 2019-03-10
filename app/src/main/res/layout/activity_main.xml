@@ -54,6 +54,17 @@
         android:foreground="@drawable/back_arrow_foregroung_selector"
         android:src="@drawable/back_arrow" />
 
+    <ImageView
+        android:id="@+id/settings_btn"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginRight="7dp"
+        android:layout_marginTop="7dp"
+        android:background="@android:color/transparent"
+        android:clickable="true"
+        android:src="@drawable/icon_settings"
+        android:layout_alignParentRight="true"/>
+
     <!--<Spinner-->
         <!--android:id="@+id/change_language_spinner"-->
         <!--android:layout_width="wrap_content"-->
@@ -74,7 +85,7 @@
         <!--android:layout_marginTop="7dp"-->
         <!--android:layout_marginRight="7dp"-->
         <!--android:padding="2dp"-->
-        <!--android:clickable="true"-->
-        <!--android:focusable="true" />-->
+        <!--android:clickable="true"
+        android:focusable="true" />-->
 
 </RelativeLayout>

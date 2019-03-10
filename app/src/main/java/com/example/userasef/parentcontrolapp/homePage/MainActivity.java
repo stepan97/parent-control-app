@@ -1,6 +1,5 @@
 package com.example.userasef.parentcontrolapp.homePage;
 
-import android.annotation.TargetApi;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.Color;
@@ -8,6 +7,7 @@ import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.RequiresApi;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -34,6 +34,7 @@ public class MainActivity extends AppCompatActivity {
 //    private static String LANGUANGE_PREFS_KEY = "app_language";
     private BottomNavigationView bottomNavigationView;
     private ImageView backButton_ImageView;
+    private ImageView settingsButton_ImageView;
 //    private ImageView language_ImageView;
     private TextView appname_TextView;
 
@@ -97,18 +98,22 @@ public class MainActivity extends AppCompatActivity {
         }
 
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+            @RequiresApi(api = Build.VERSION_CODES.M)
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 switch (item.getItemId()){
                     case R.id.action_home:
+                        updateMainBackground(R.drawable.home_background);
                         ActivityUtil.popAllBackStack(getSupportFragmentManager());
                         ActivityUtil.pushFragment(HomeFragment.newInstance(), getSupportFragmentManager(), R.id.fragment_container_main, false);
                         break;
                     case R.id.action_devices:
+                        updateMainBackground(R.drawable.select_user_background);
                         ActivityUtil.popAllBackStack(getSupportFragmentManager());
                         ActivityUtil.pushFragment(SelectUserFragment.newInstance(), getSupportFragmentManager(), R.id.fragment_container_main, false);
                         break;
                     case R.id.action_create_user:
+                        updateMainBackground(R.drawable.home_background);
                         ActivityUtil.popAllBackStack(getSupportFragmentManager());
                         ActivityUtil.pushFragment(CreateNewUserFragment.newInstance(), getSupportFragmentManager(), R.id.fragment_container_main, false);
                         break;
@@ -129,6 +134,7 @@ public class MainActivity extends AppCompatActivity {
         backButton_ImageView = findViewById(R.id.gotoPreviousFragment_btn);
 //        language_ImageView = findViewById(R.id.change_language_btn);
         appname_TextView = findViewById(R.id.main_activity_appname);
+        settingsButton_ImageView = findViewById(R.id.settings_btn);
     }
 
     private void initListeners() {
@@ -141,6 +147,13 @@ public class MainActivity extends AppCompatActivity {
                 if (manager.getBackStackEntryCount() == 0) {
                     backButton_ImageView.setVisibility(View.GONE);
                 }
+            }
+        });
+
+        settingsButton_ImageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getApplicationContext(), SettingsActivity.class));
             }
         });
     }
@@ -205,16 +218,18 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    @TargetApi(Build.VERSION_CODES.M)
-    public void updateMainBackground(Drawable drawable){
+    @RequiresApi(Build.VERSION_CODES.M)
+    public void updateMainBackground(int drawableId){
         RelativeLayout layout = findViewById(R.id.main_layout);
-        if(layout != null){
+        Drawable drawable = getDrawable(drawableId);
+        if(layout != null && drawable != null){
             layout.setBackground(drawable);
-            if(drawable == null){
-                layout.setBackgroundColor(getApplicationContext().getColor(R.color.new_darker_blue));
-            }else {
-                layout.setBackgroundColor(getApplicationContext().getColor(R.color.new_transparent));
-            }
+//            layout.setBackgroundColor(getResources().getColor(R.color.light_blue));
+//            if(drawable == null){
+//                layout.setBackgroundColor(getResources().getColor(R.color.new_darker_blue));
+//            }else {
+//                layout.setBackgroundColor(getResources().getColor(R.color.new_transparent));
+//            }
         }
     }
 }

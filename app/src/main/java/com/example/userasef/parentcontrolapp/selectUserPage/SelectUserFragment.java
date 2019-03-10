@@ -1,13 +1,12 @@
 package com.example.userasef.parentcontrolapp.selectUserPage;
 
-import android.annotation.TargetApi;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -45,7 +44,6 @@ public class SelectUserFragment extends Fragment implements ISelectUserContract.
         // default constructor
     }
 
-    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -60,11 +58,6 @@ public class SelectUserFragment extends Fragment implements ISelectUserContract.
                     true,
                     false
             );
-
-            if(getContext() != null)
-                ((MainActivity)getActivity()).updateMainBackground(
-                        getContext().getDrawable(R.drawable.select_user_background)
-                );
         }
 
         mPresenter = new SelectUserPresenter(this, getContext());
@@ -73,7 +66,14 @@ public class SelectUserFragment extends Fragment implements ISelectUserContract.
         return view;
     }
 
-//    @Override
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        Log.d("TAGO", "onResume SelectUserFragment");
+    }
+
+    //    @Override
 //    public void onResume() {
 //        super.onResume();
 ////        getActivity().findViewById(R.id.gotoPreviousFragment_btn).setVisibility(View.GONE);
@@ -111,6 +111,9 @@ public class SelectUserFragment extends Fragment implements ISelectUserContract.
 
     @Override
     public void setAdapterChildUserList(ArrayList<ChildUser> list) {
+        for (int i = 0; i < list.size(); i++) {
+            Log.d("TAGO", list.get(i).getName());
+        }
         adapter.setChildUserList(list);
     }
 

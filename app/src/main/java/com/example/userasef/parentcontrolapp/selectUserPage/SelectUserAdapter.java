@@ -54,6 +54,7 @@ public class SelectUserAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     public void setChildUserList(ArrayList<ChildUser> list){
         childUserList = list;
 //   todo:    notifyDataSetChanged();
+        notifyDataSetChanged();
     }
 
 
